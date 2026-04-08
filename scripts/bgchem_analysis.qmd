@@ -1,0 +1,70 @@
+---
+title: "Untitled"
+format: html
+---
+
+# Introduction
+
+## About the data
+
+text
+
+# Setup
+
+
+```{r load packages}
+#| warning: false
+#| message: false
+library(readr)
+library(here)
+library(ggplot2)
+```
+
+
+```{r}
+#| echo: false
+bg_chem <- read_csv(here('data', 'BGchem2008data.csv'))
+```
+
+## Analysis
+
+### Summary Statistics
+
+```{r}
+nitrate <- mean(bg_chem$NO3)
+nitrite <- mean(bg_chem$NO2)
+amm     <- mean(bg_chem$NH4)
+phos    <- mean(bg_chem$P)
+```
+
+The mean nitrate value is  `{r} round(nitrate)`.
+The mean nitrite value is  `{r} round(nitrite)`.
+The mean ammonium value is  `{r} round(amm)`.
+The mean phosphate value is  `{r} round(phos)`.
+
+### Redfield Ratio
+
+```{r}
+#| echo: false
+ratio <- (nitrate + nitrite + amm) / phos
+```
+
+The Redfield ratio for this dataset is approximately `{r} round(ratio)`.
+
+### Plot
+
+```{r}
+#| echo: false
+#plot(bg_chem$P, bg_chem$NO2 + bg_chem$NO3 + bg_chem$NH4)
+
+ggplot2::ggplot(bg_chem, aes(x= P, y=(NO2 + bg_chem$NO3 + bg_chem$NH4)))+
+    geom_point()+
+    ylab("Nitrate + Nitrite + Ammonium")+
+    xlab("Phosphate")+
+    theme_bw()
+
+```
+
+
+## Conclusion
+

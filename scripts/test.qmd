@@ -1,0 +1,30 @@
+---
+title: "Introduction to Quarto"
+format: html
+bibliography: references.bib
+---
+
+# Test document
+
+This document is a test document to practice using quarto files.
+
+## Mathematical questions
+
+**Addition**
+
+```{r}
+#| echo: false
+print("What is 2+2?")
+2+2
+
+print("What is 3+8?")
+3+8
+```
+
+**Subtraction**
+
+[@oke2020]
+
+
+
+**References**
