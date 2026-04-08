@@ -44,7 +44,7 @@ The mean phosphate value is  `{r} round(phos)`.
 
 ### Redfield Ratio
 
-```{r}
+```{r redfield ratio}
 #| echo: false
 ratio <- (nitrate + nitrite + amm) / phos
 ```
