@@ -126,7 +126,27 @@ ggsave(here("figures/visit_restore_site_facet.jpg"),
        width = 12, height = 8, units = "in")
 ```
 
+### Make an interactive data table
 ```{r}
 datatable(delta_visits)
 ```
 
+### Make an interactive map
+
+```{r}
+restoration_sites <- delta_visits_raw %>% 
+  clean_names() %>% 
+  distinct(restore_loc= eco_restore_approximate_location,
+  latitude, longitude) %>% 
+  drop_na(latitude, longitude)
+
+restoration_sites
+```
+
+
+```{r}
+leaflet(restoration_sites) %>% 
+  addTiles() %>% 
+  addMarkers(lng = ~longitude,
+  lat= ~latitude)
+```
