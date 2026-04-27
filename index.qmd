@@ -6,4 +6,4 @@ format: html
 This is a really great report about...
 
 ## Course analysis
-- Data visualization (link coming soon!)
+- [Data visualization](notebooks/data-visualization.html)
