@@ -19,6 +19,8 @@ library(ggplot2)
 
 ### Interactive output
 library(plotly)
+library(DT)
+library(leaflet)
 ```
 
 ## Load the data
@@ -122,5 +124,9 @@ ggplotly(facet_plot, tooltip = c('x', 'y'))
 ggsave(here("figures/visit_restore_site_facet.jpg"), 
        plot = facet_plot, 
        width = 12, height = 8, units = "in")
+```
+
+```{r}
+datatable(delta_visits)
 ```
 
