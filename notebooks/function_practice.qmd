@@ -1,0 +1,102 @@
+---
+title: "Function practice"
+author: "LMcCormick"
+format: html
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(purrr) #for interaction using map() family of fcns
+
+library(palmerpenguins)
+
+```
+
+```{r}
+airtemps <- c(212, 30.3, 78, 32)
+celsius1 <- (airtemps[1] - 32) * 5/9
+celsius2 <- (airtemps[2] - 32) * 5/9
+celsius3 <- (airtemps[3] - 33) * 5/9
+
+convert_f_to_c <- function(fahr) {
+  celsius <- (fahr - 32) * 5/9
+  return(celsius)
+}
+
+### check single value:
+celsius1a <- convert_f_to_c(airtemps[1])
+celsius1a == celsius1
+
+convert_f_to_c(fahr = airtemps)
+```
+
+```{r}
+covert_temp <- function(t, scale = "f"){
+    scale = tolower(substr(scale, 1, 1))
+    if(!scale %in% c("c", "f")){
+        stop('Scale must be either "c" or "f"!') #don't use print- won't stop fcn and will give incorrect 
+        #result
+    }
+    if(scale == "c") {
+        result <- t * 9/5 + 32
+    } else {
+        result <- (t-32) * 5/9
+    }
+    return(result)
+}
+
+covert_temp(t= airtemps, scale = "celcius")
+```
+
+```{r}
+convert_f_to_c_k <- function(f) {
+  c <- (f - 32) * 5/9
+  k  <- c + 273.15
+  out_list <- list(fahr = f, celsius = c, kelvin = k)
+  return(out_list)
+}
+
+temps_list <- convert_f_to_c_k(seq(-100, 100, 50))
+temps_list
+```
+
+```{r}
+# Example, probably won't use
+a <- 1       ### create object a in parent environment
+
+add_one <- function(x) {
+  x <- x + 1 ### increment argument by 1
+  a <- a + 2 ### modify a in function environment
+  b <- a + 3 ### create b in function environment
+  return(x)  ### only x is returned back to parent
+}
+
+add_one(a)   ### give `a` as arg to the function; returns the value a + 1
+```
+
+```{r}
+# Simple example
+nums <- list(1, 3, 9, 49, 101, pi)
+purrr::map_vec(.x = nums, .f = sqrt)
+base::sapply(X = nums, FUN = sqrt)
+
+#complex example
+
+data(penguins)
+spp_vec <- unique(penguins$species)
+
+calc_bill_model <- function(spp, df) {
+    spp_df <- df %>%
+        filter(species == spp)
+    bill_mdl <- lm(bill_length_mm ~ bill_depth_mm, data = spp_df)
+    return(bill_mdl)
+}
+map_results <- purrr::map(.x = spp_vec, .f = calc_bill_model, df = penguins)
+broom::tidy(map_results[[3]]) #takes a model object and breaks out pvale, estimates, etc
+lapply_results <- base::lapply(X = spp_vec, FUN = calc_bill_model, df = penguins)
+broom::tidy(lapply_results[[3]])
+
+# test comments
+```
